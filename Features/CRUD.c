@@ -12,24 +12,29 @@ void product_load(product *prod, const char *product_csv)
     char line[500];
     while (fgets(line, sizeof(line), shared_product))
     {
+        if (product_count == 0)
+        {
+            product_count++;
+            continue;
+        }
         int col = 0;
         char *value = strtok(line, ",");
         while (value)
         {
             if (col == 0)
-                sscanf(value, "%d", &prod[product_count].id);
+                sscanf(value, "%d", &prod[product_count - 1].id);
             else if (col == 1)
-                strcpy(prod[product_count].name, value);
+                strcpy(prod[product_count - 1].name, value);
             else if (col == 2)
-                strcpy(prod[product_count].description, value);
+                strcpy(prod[product_count - 1].description, value);
             else if (col == 3)
-                sscanf(value, "%f", &prod[product_count].cost);
+                sscanf(value, "%f", &prod[product_count - 1].cost);
             else if (col == 4)
-                sscanf(value, "%f", &prod[product_count].price);
+                sscanf(value, "%f", &prod[product_count - 1].price);
 
             value = strtok(NULL, ",");
             col++;
-            max_product_index = (max_product_index < prod[product_count].id) ? prod[product_count].id : max_product_index;
+            max_product_index = (max_product_index < prod[product_count - 1].id) ? prod[product_count - 1].id : max_product_index;
         }
         product_count++;
     }
@@ -118,6 +123,9 @@ void product_save(product *prod, const char *product_csv)
         printf("Error: Unable to open file for writing.\n");
         return;
     }
+
+    // Write the header row
+    fprintf(shared_product, "id,name,description,price,cost\n");
 
     for (int i = 0; i < product_count; i++)
     {

@@ -1,5 +1,5 @@
-0,name,description,0.00,0.00
-1,New Name,Over-ear Bluetooth headphones with noise cancellation,79.99,99.99
+id,name,description,price,cost
+1,headphones,Over-ear Bluetooth headphones with noise cancellation,79.99,99.99
 3,Portable Speaker,Compact wireless speaker with 12-hour battery life,59.99,40.00
 4,Gaming Mouse,Ergonomic gaming mouse with customizable RGB lighting,39.99,25.00
 5,Laptop Sleeve,Sleek and durable laptop sleeve with extra storage pockets,25.49,15.00

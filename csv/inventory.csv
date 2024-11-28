@@ -1,0 +1,11 @@
+id,name,quantity_in_stock,threshold_quantity
+1,headphones,50,10
+3,Portable Speaker,30,5
+4,Gaming Mouse,25,5
+5,Laptop Sleeve,50,10
+6,Electric Toothbrush,40,10
+7,Action Camera,15,5
+8,Desk Organizer,60,10
+9,Travel Backpack,20,5
+10,Wireless Charger,35,5
+0,,0,0
