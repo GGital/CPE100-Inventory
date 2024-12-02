@@ -1,10 +1,13 @@
 #include <stdio.h>
+#include <string.h>
+#include <time.h>
 #include "feature1.h"
 #include "CRUD.h"
 #include "Inventory.h"
+#include "coupon.h"
 
 // Compilenation code
-// gcc -I./Features main.c Features/CRUD.c Features/Inventory.c Features/feature1.c -o program
+// gcc -I./Features main.c Features/coupon.c Features/CRUD.c Features/Inventory.c Features/feature1.c -o program
 
 const char product_csv[] = "./csv/product.csv";
 const char inventory_csv[] = "./csv/inventory.csv";
