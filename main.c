@@ -1,44 +1,63 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include "feature1.h"
+#include "Authentication.h"
+#include "owner.h"
 #include "CRUD.h"
 #include "Inventory.h"
 #include "coupon.h"
 
 // Compilenation code
-// gcc -I./Features main.c Features/coupon.c Features/CRUD.c Features/Inventory.c Features/feature1.c -o program
+// gcc -o program -I./Sub-Interface -I./Features main.c Sub-Interface/owner.c Features/coupon.c Features/CRUD.c Features/Inventory.c Features/Authentication.c
 
-const char product_csv[] = "./csv/product.csv";
-const char inventory_csv[] = "./csv/inventory.csv";
+int result;
 
 int main()
 {
 
-    product prod[500];
-    inventory inv[500];
-
     inventory_load(inv, inventory_csv);
     product_load(prod, product_csv);
+    coupon_load(cou, coupon_csv);
 
-    product_read(prod, 0, 10000);
+    delete_expired_coupons(cou);
 
-    // Update a product (Example: ID = 1)
-    product_update(prod, product_csv, 1, "New Name", "", -1, 99.99);
+    int choice;
 
-    product_read(prod, 0, 10000);
+    do
+    {
+        // Display the menu
+        printf("\n======================================\n");
+        printf("      Inventory System Management\n");
+        printf("======================================\n");
+        printf("1. Create Customer User\n");
+        printf("2. Login Customer User\n");
+        printf("3. Login Owner User\n");
+        printf("0. Exit\n");
+        printf("======================================\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-    product_delete(prod, product_csv, 2);
-
-    product_read(prod, 50, 80);
-
-    // printf("%d", product_count);
-
-    inventory_check_stock(inv);
-
-    inventory_restock(inv, inventory_csv, 1, 5);
-
-    inventory_check_stock(inv);
+        // Handle user input
+        switch (choice)
+        {
+        case 1:
+            add_new_user(authentication_csv, 0);
+            break;
+        case 2:
+            result = loginUser(authentication_csv, 0);
+            break;
+        case 3:
+            result = loginUser(authentication_csv, 1);
+            if (result)
+                ownerPrivilegesMenu();
+            break;
+        case 0:
+            printf("\nExiting... Thank you for using the system!\n");
+            break;
+        default:
+            printf("\nInvalid choice! Please try again.\n");
+        }
+    } while (choice != 0);
 
     return 0;
 }

@@ -6,6 +6,10 @@
 int coupon_count = 0;
 int max_coupon_index = 0;
 
+coupon cou[500];
+
+char coupon_csv[] = "./csv/coupon.csv";
+
 void coupon_load(coupon *coupons, const char *coupon_csv)
 {
     coupon_count = 0;
@@ -60,7 +64,7 @@ void coupon_read(coupon *coupons, float min_discount, float max_discount)
            "ID", "Name", "Minimum Cost", "Discount Rate", "Expiry Date");
     printf("==============================================================================================================\n");
 
-    for (int i = 1; i < coupon_count; i++)
+    for (int i = 0; i < coupon_count; i++)
     {
         if (coupons[i].discountRate >= min_discount && coupons[i].discountRate <= max_discount)
         {
@@ -109,7 +113,7 @@ void coupon_save(coupon *coupons, const char *coupon_csv)
     }
 
     fclose(shared_coupon);
-    printf("Coupons saved successfully to %s.\n", coupon_csv);
+    // printf("Coupons saved successfully to %s.\n", coupon_csv);
 }
 
 void delete_expired_coupons(coupon *coupons)
@@ -142,6 +146,8 @@ void delete_expired_coupons(coupon *coupons)
     // Update coupon count to the number of valid coupons
     coupon_count = valid_count;
 
+    coupon_save(cou, coupon_csv);
+
     printf("Expired coupons removed. %d valid coupons remain.\n", coupon_count);
 }
 
@@ -153,17 +159,16 @@ void coupon_create(coupon *coupons, const char *coupon_csv, char name[], float m
         expiry_month > 0 && expiry_month <= 12 &&
         expiry_year >= 1900)
     {
-        coupons[max_coupon_index].id = max_coupon_index;
-        strcpy(coupons[max_coupon_index].name, name);
-        coupons[max_coupon_index].minimum_cost = minimum_cost;
-        coupons[max_coupon_index].discountRate = discountRate;
-        coupons[max_coupon_index].expiry_day = expiry_day;
-        coupons[max_coupon_index].expiry_month = expiry_month;
-        coupons[max_coupon_index].expiry_year = expiry_year;
+        coupons[max_coupon_index - 1].id = max_coupon_index;
+        strcpy(coupons[max_coupon_index - 1].name, name);
+        coupons[max_coupon_index - 1].minimum_cost = minimum_cost;
+        coupons[max_coupon_index - 1].discountRate = discountRate;
+        coupons[max_coupon_index - 1].expiry_day = expiry_day;
+        coupons[max_coupon_index - 1].expiry_month = expiry_month;
+        coupons[max_coupon_index - 1].expiry_year = expiry_year;
 
         coupon_count++;
         coupon_save(coupons, coupon_csv);
-
         printf("Coupon '%s' created successfully!\n", name);
     }
     else

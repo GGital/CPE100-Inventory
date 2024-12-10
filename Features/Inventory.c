@@ -5,6 +5,10 @@
 int inventory_count = 0;     // Tracks the number of inventory items
 int max_inventory_index = 0; // Tracks the maximum id in the inventory
 
+char inventory_csv[] = "./csv/inventory.csv";
+
+inventory inv[500];
+
 void inventory_load(inventory *inv, const char *inventory_csv)
 {
     inventory_count = 0;                    // Initialize inventory count

@@ -5,6 +5,10 @@
 int product_count = 0;
 int max_product_index = 0;
 
+product prod[500];
+
+char product_csv[] = "./csv/product.csv";
+
 void product_load(product *prod, const char *product_csv)
 {
     product_count = 0;
