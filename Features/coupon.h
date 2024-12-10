@@ -26,4 +26,8 @@ extern int coupon_count;
 
 extern int max_coupon_index;
 
+extern coupon cou[];
+
+extern char coupon_csv[];
+
 #endif

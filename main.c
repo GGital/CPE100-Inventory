@@ -10,20 +10,16 @@
 // Compilenation code
 // gcc -o program -I./Sub-Interface -I./Features main.c Sub-Interface/owner.c Features/coupon.c Features/CRUD.c Features/Inventory.c Features/Authentication.c
 
-const char product_csv[] = "./csv/product.csv";
-const char inventory_csv[] = "./csv/inventory.csv";
-const char authentication_csv[] = "./csv/authentication.csv";
-
 int result;
 
 int main()
 {
 
-    product prod[500];
-    inventory inv[500];
-
     inventory_load(inv, inventory_csv);
     product_load(prod, product_csv);
+    coupon_load(cou, coupon_csv);
+
+    delete_expired_coupons(cou);
 
     int choice;
 

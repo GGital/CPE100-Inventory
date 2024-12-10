@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "Authentication.h"
 
+char authentication_csv[] = "./csv/authentication.csv";
+
 unsigned long long int simple_hash(const char *password)
 {
     unsigned long long int hash = 5381; // Starting value

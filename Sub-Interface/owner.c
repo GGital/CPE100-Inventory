@@ -1,4 +1,7 @@
 #include "owner.h"
+#include "CRUD.h"
+#include "coupon.h"
+#include "Inventory.h"
 
 void ownerPrivilegesMenu()
 {
@@ -48,7 +51,6 @@ void couponMenu()
         printf("\n--- Coupon Management ---\n");
         printf("1. Add Coupon\n");
         printf("2. View Coupons\n");
-        printf("3. Delete Coupon\n");
         printf("0. Back to Owner Menu\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -56,13 +58,32 @@ void couponMenu()
         switch (choice)
         {
         case 1:
-            printf("Feature to add coupon coming soon...\n");
+            char name[500];
+            float minimum_cost, discountRate;
+            int day, month, year;
+            printf("\n======================================\n");
+            printf("            Coupon Creation\n");
+            printf("======================================\n");
+            printf("Enter name of coupon: ");
+            scanf("%s", name);
+            printf("Enter minimum_cost: ");
+            scanf("%f", &minimum_cost);
+            printf("Enter discount rate for the coupon: ");
+            scanf("%f", &discountRate);
+            printf("When will this coupon expire (dd/mm/yyyy) : ");
+            scanf("%d/%d/%d", &day, &month, &year);
+            coupon_create(cou, coupon_csv, name, minimum_cost, discountRate, day, month, year);
             break;
         case 2:
-            printf("Feature to view coupons coming soon...\n");
-            break;
-        case 3:
-            printf("Feature to delete coupon coming soon...\n");
+            float minimum_discount, maximum_discount;
+            printf("\n======================================\n");
+            printf("            List of Coupon\n");
+            printf("======================================\n");
+            printf("Enter minimum discount rate: ");
+            scanf("%f", &minimum_discount);
+            printf("Enter maximum discount rate: ");
+            scanf("%f", &maximum_discount);
+            coupon_read(cou, minimum_discount, maximum_discount);
             break;
         case 0:
             printf("Returning to Owner Privileges Menu...\n");

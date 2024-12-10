@@ -21,4 +21,8 @@ extern int inventory_count;
 
 extern int max_inventory_index;
 
+extern inventory inv[];
+
+extern char inventory_csv[];
+
 #endif

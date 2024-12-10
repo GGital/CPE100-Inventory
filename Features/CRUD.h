@@ -26,4 +26,8 @@ extern int product_count;
 
 extern int max_product_index;
 
+extern product prod[];
+
+extern char product_csv[];
+
 #endif

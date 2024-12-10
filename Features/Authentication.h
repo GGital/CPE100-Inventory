@@ -9,4 +9,6 @@ int loginUser(const char *authentication_csv, int privileges);
 
 int add_new_user(const char *authentication_csv, int privileges);
 
+extern char authentication_csv[];
+
 #endif

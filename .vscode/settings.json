@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "feature1.h": "c"
+    "feature1.h": "c",
+    "authentication.h": "c"
   }
 }
