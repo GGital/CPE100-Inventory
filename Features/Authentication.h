@@ -11,4 +11,8 @@ int add_new_user(const char *authentication_csv, int privileges);
 
 extern char authentication_csv[];
 
+extern char put_username[];
+
+extern char put_password[];
+
 #endif

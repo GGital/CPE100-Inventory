@@ -5,19 +5,36 @@
 #include "owner.h"
 #include "CRUD.h"
 #include "Inventory.h"
+#include "cart.h"
 #include "coupon.h"
+#include "customer.h"
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+void enable_ansi_colors()
+{
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= 0x0004; // ENABLE_VIRTUAL_TERMINAL_PROCESSING
+    SetConsoleMode(hOut, dwMode);
+}
 
 // Compilenation code
-// gcc -o program -I./Sub-Interface -I./Features main.c Sub-Interface/owner.c Features/coupon.c Features/CRUD.c Features/Inventory.c Features/Authentication.c
+// gcc -mconsole -o program -I./Sub-Interface -I./Features main.c Sub-Interface/beautiful_cli.c Sub-Interface/owner.c Sub-Interface/customer.c Features/coupon.c Features/cart.c Features/CRUD.c Features/Inventory.c Features/Authentication.c
 
 int result;
 
 int main()
 {
-
+    enable_ansi_colors();
     inventory_load(inv, inventory_csv);
     product_load(prod, product_csv);
     coupon_load(cou, coupon_csv);
+    Load_cart(cart_csv);
+
+    sync_inventory_with_product(inventory_csv, product_csv);
 
     delete_expired_coupons(cou);
 
@@ -45,6 +62,8 @@ int main()
             break;
         case 2:
             result = loginUser(authentication_csv, 0);
+            if (result)
+                customerPrivilegesMenu();
             break;
         case 3:
             result = loginUser(authentication_csv, 1);

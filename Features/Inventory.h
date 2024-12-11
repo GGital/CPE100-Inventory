@@ -17,6 +17,14 @@ void inventory_check_stock(inventory *inv);
 
 void inventory_restock(inventory *inv, const char *inventory_csv, int id, int quantity);
 
+void inventory_add_product(inventory *inv, const char *inventory_csv, int id, const char *name, int stock, int threshold);
+
+void inventory_delete_product(inventory *inv, const char *inventory_csv, int id);
+
+void sync_inventory_with_product(const char *inventory_csv, const char *product_csv);
+
+void inventory_adjust_threshold(inventory *inv, const char *inventory_csv, int id, int new_threshold);
+
 extern int inventory_count;
 
 extern int max_inventory_index;

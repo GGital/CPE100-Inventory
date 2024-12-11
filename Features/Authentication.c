@@ -5,6 +5,8 @@
 
 char authentication_csv[] = "./csv/authentication.csv";
 
+char put_username[200], put_password[200];
+
 unsigned long long int simple_hash(const char *password)
 {
     unsigned long long int hash = 5381; // Starting value
@@ -20,27 +22,26 @@ unsigned long long int simple_hash(const char *password)
 
 int loginUser(const char *authentication_csv, int privileges)
 {
-    char username[100], password[100];
 
     printf("\n======================================\n");
     printf("            User Login\n");
     printf("======================================\n");
     printf("Enter username: ");
-    scanf("%s", username);
+    scanf("%s", put_username);
     printf("Enter password: ");
-    scanf("%s", password);
+    scanf("%s", put_password);
 
-    int result = validate_user(authentication_csv, username, password, privileges);
+    int result = validate_user(authentication_csv, put_username, put_password, privileges);
 
     if (result == 1)
     {
         if (privileges == 0)
         {
-            printf("Welcome, Customer %s!\n", username);
+            printf("Welcome, Customer %s!\n", put_username);
         }
         else
         {
-            printf("Welcome, Owner %s!\n", username);
+            printf("Welcome, Owner %s!\n", put_username);
         }
     }
     else

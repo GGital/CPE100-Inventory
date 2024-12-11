@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "feature1.h": "c",
-    "authentication.h": "c"
+    "authentication.h": "c",
+    "beautiful_cli.h": "c"
   }
 }

@@ -143,3 +143,160 @@ void inventory_restock(inventory *inv, const char *inventory_csv, int id, int qu
     // Save the updated inventory back to the CSV file
     inventory_save(inv, inventory_csv);
 }
+
+void inventory_add_product(inventory *inv, const char *inventory_csv, int id, const char *name, int stock, int threshold)
+{
+    // Check if the inventory is full
+    if (inventory_count >= 500)
+    {
+        printf("Error: Inventory is full. Cannot add more products.\n");
+        return;
+    }
+
+    // Check if the product ID already exists
+    for (int i = 0; i < inventory_count; i++)
+    {
+        if (inv[i].id == id)
+        {
+            printf("Error: Product with ID %d already exists.\n", id);
+            return;
+        }
+    }
+
+    // Add the new product to the inventory array
+    inv[inventory_count].id = id;
+    strcpy(inv[inventory_count].name, name);
+    inv[inventory_count].stock = stock;
+    inv[inventory_count].threshold = threshold;
+
+    inventory_count++;
+    printf("Product added successfully: %s (ID: %d)\n", name, id);
+
+    // Save the updated inventory to the CSV file
+    inventory_save(inv, inventory_csv);
+}
+
+void inventory_delete_product(inventory *inv, const char *inventory_csv, int id)
+{
+    int found = 0; // Flag to track if the product is found
+
+    // Iterate through the inventory to find the product
+    for (int i = 0; i < inventory_count; i++)
+    {
+        if (inv[i].id == id)
+        {
+            found = 1;
+
+            // Shift the remaining elements in the array to fill the gap
+            for (int j = i; j < inventory_count - 1; j++)
+            {
+                inv[j] = inv[j + 1];
+            }
+
+            inventory_count--; // Decrease the inventory count
+            printf("Product with ID %d deleted successfully.\n", id);
+            break;
+        }
+    }
+
+    // If the product was not found, print an error message
+    if (!found)
+    {
+        printf("Error: Product with ID %d not found.\n", id);
+        return;
+    }
+
+    // Save the updated inventory to the CSV file
+    inventory_save(inv, inventory_csv);
+}
+
+void sync_inventory_with_product(const char *inventory_csv, const char *product_csv)
+{
+    FILE *product_file = fopen(product_csv, "r");
+    if (!product_file)
+    {
+        printf("Error: Unable to open product.csv.\n");
+        return;
+    }
+
+    inventory new_inventory[500];
+    int new_inventory_count = 0;
+
+    char line[500];
+    while (fgets(line, sizeof(line), product_file))
+    {
+        if (new_inventory_count == 0)
+        {
+            // Skip the header line
+            new_inventory_count++;
+            continue;
+        }
+
+        int id;
+        char name[100];
+        int stock = 0;     // Default stock
+        int threshold = 0; // Default threshold
+
+        sscanf(line, "%d,%99[^,]", &id, name);
+
+        // Check if the product already exists in the current inventory
+        int found = 0;
+        for (int i = 0; i < inventory_count; i++)
+        {
+            if (inv[i].id == id)
+            {
+                found = 1;
+                new_inventory[new_inventory_count - 1] = inv[i];
+                break;
+            }
+        }
+
+        // If not found, add it as a new product with default values
+        if (!found)
+        {
+            new_inventory[new_inventory_count - 1].id = id;
+            strcpy(new_inventory[new_inventory_count - 1].name, name);
+            new_inventory[new_inventory_count - 1].stock = stock;
+            new_inventory[new_inventory_count - 1].threshold = threshold;
+        }
+
+        new_inventory_count++;
+    }
+    fclose(product_file);
+
+    // Update the inventory array and count
+    memcpy(inv, new_inventory, sizeof(new_inventory));
+    inventory_count = new_inventory_count - 1;
+
+    // Save the updated inventory to inventory.csv
+    inventory_save(inv, inventory_csv);
+
+    printf("Synchronization complete.\n");
+}
+
+void inventory_adjust_threshold(inventory *inv, const char *inventory_csv, int id, int new_threshold)
+{
+    int found = 0; // Flag to track if the product is found
+
+    // Iterate through the inventory to find the product
+    for (int i = 0; i < inventory_count; i++)
+    {
+        if (inv[i].id == id)
+        {
+            inv[i].threshold = new_threshold; // Update the threshold
+            printf("Threshold for product ID %d updated to %d.\n", id, new_threshold);
+            found = 1;
+            break;
+        }
+    }
+
+    // If the product was not found, print an error message
+    if (!found)
+    {
+        printf("Error: Product with ID %d not found.\n", id);
+        return;
+    }
+
+    // Save the updated inventory to the CSV file
+    inventory_save(inv, inventory_csv);
+}

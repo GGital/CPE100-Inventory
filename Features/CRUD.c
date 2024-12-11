@@ -43,6 +43,7 @@ void product_load(product *prod, const char *product_csv)
         product_count++;
     }
     fclose(shared_product);
+    product_count--;
 }
 
 void product_create(product *prod, const char *product_csv, char name[], char description[], float cost, float price)
@@ -50,10 +51,11 @@ void product_create(product *prod, const char *product_csv, char name[], char de
     max_product_index++;
     if (strlen(name) > 0 && strlen(description) > 0 && cost >= 0 && price >= 0)
     {
-        strcpy(prod[max_product_index].name, name);
-        strcpy(prod[max_product_index].description, description);
-        prod[max_product_index].cost = cost;
-        prod[max_product_index].price = price;
+        prod[product_count].id = max_product_index;
+        strcpy(prod[product_count].name, name);
+        strcpy(prod[product_count].description, description);
+        prod[product_count].cost = cost;
+        prod[product_count].price = price;
     }
     else
     {
@@ -71,8 +73,7 @@ void product_read(product *prod, float min_price, float max_price)
         printf("| %-5s | %-20s | %-70s | %-10s | %-10s |\n",
                "ID", "Name", "Description", "Cost", "Price");
         printf("==========================================================================================================================================\n");
-
-        for (int i = 1; i < product_count; i++)
+        for (int i = 0; i < product_count; i++)
         {
             if (prod[i].price >= min_price && prod[i].price <= max_price)
             {
@@ -111,11 +112,11 @@ void product_update(product *prod, const char *product_csv, int id, char name[],
                 prod[i].price = price;
 
             printf("Product with ID %d updated successfully.\n", id);
+            product_save(prod, product_csv);
             return;
         }
     }
     printf("Product with ID %d not found.\n", id);
-    product_save(prod, product_csv);
 }
 
 // Function to save the updated products back to the CSV file
@@ -172,6 +173,8 @@ void product_delete(product *prod, const char *product_csv, int id)
         printf("Error: Unable to open file for writing.\n");
         return;
     }
+
+    fprintf(file, "id,name,description,price,cost\n");
 
     for (int i = 0; i < product_count; i++)
     {

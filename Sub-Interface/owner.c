@@ -2,7 +2,7 @@
 #include "CRUD.h"
 #include "coupon.h"
 #include "Inventory.h"
-
+#include "beautiful_cli.h"
 void ownerPrivilegesMenu()
 {
     int choice;
@@ -72,12 +72,13 @@ void couponMenu()
             scanf("%f", &discountRate);
             printf("When will this coupon expire (dd/mm/yyyy) : ");
             scanf("%d/%d/%d", &day, &month, &year);
+            animated_spinner(10);
             coupon_create(cou, coupon_csv, name, minimum_cost, discountRate, day, month, year);
             break;
         case 2:
             float minimum_discount, maximum_discount;
             printf("\n======================================\n");
-            printf("            List of Coupon\n");
+            printf(ANSI_COLOR_GREEN "            List of Coupon\n" ANSI_COLOR_RESET);
             printf("======================================\n");
             printf("Enter minimum discount rate: ");
             scanf("%f", &minimum_discount);
@@ -98,9 +99,14 @@ void couponMenu()
 void crudMenu()
 {
     int choice;
+    char name[500], description[500];
+    float cost, price;
+    int id;
     do
     {
-        printf("\n--- CRUD Operations ---\n");
+        printf("\n======================================\n");
+        printf("            CRUD Operations\n");
+        printf("======================================\n");
         printf("1. Create Item\n");
         printf("2. Read Items\n");
         printf("3. Update Item\n");
@@ -112,16 +118,48 @@ void crudMenu()
         switch (choice)
         {
         case 1:
-            printf("Feature to create item coming soon...\n");
+            printf("\n======================================\n");
+            printf("            Inserting New Product\n");
+            printf("======================================\n");
+            printf("Enter name of product: ");
+            scanf("%s", name);
+            printf("Enter description of product: ");
+            scanf("%s", description);
+            printf("Enter cost (principal): ");
+            scanf("%f", &cost);
+            printf("Enter selling price: ");
+            scanf("%f", &price);
+            animated_spinner(10);
+            product_create(prod, product_csv, name, description, cost, price);
             break;
         case 2:
-            printf("Feature to read items coming soon...\n");
+            product_read(prod, 0, 999);
             break;
         case 3:
-            printf("Feature to update item coming soon...\n");
+            printf("\n======================================\n");
+            printf("            Updating Product\n");
+            printf("======================================\n");
+            printf("Enter id of product: ");
+            scanf("%d", &id);
+            printf("Enter name of product: ");
+            scanf("%s", name);
+            printf("Enter description of product: ");
+            scanf("%s", description);
+            printf("Enter cost (principal): ");
+            scanf("%f", &cost);
+            printf("Enter selling price: ");
+            scanf("%f", &price);
+            animated_spinner(10);
+            product_update(prod, product_csv, id, name, description, cost, price);
             break;
         case 4:
-            printf("Feature to delete item coming soon...\n");
+            printf("\n======================================\n");
+            printf("            Deleting Product\n");
+            printf("======================================\n");
+            printf("Enter id of product: ");
+            scanf("%d", &id);
+            animated_spinner(10);
+            product_delete(prod, product_csv, id);
             break;
         case 0:
             printf("Returning to Owner Privileges Menu...\n");
@@ -135,7 +173,7 @@ void crudMenu()
 // Inventory management menu function
 void inventoryMenu()
 {
-    int choice;
+    int choice, id, quantity;
     do
     {
         printf("\n--- Inventory Management ---\n");
@@ -149,10 +187,17 @@ void inventoryMenu()
         switch (choice)
         {
         case 1:
-            printf("Feature to view inventory coming soon...\n");
+            inventory_check_stock(inv);
             break;
         case 2:
-            printf("Feature to add stock coming soon...\n");
+            printf("\n======================================\n");
+            printf("            Inventory Restocking\n");
+            printf("======================================\n");
+            printf("Enter id of product: ");
+            scanf("%d", &id);
+            printf("Enter quantity of product to be restocked: ");
+            scanf("%d", &quantity);
+            inventory_restock(inv, inventory_csv, id, quantity);
             break;
         case 3:
             printf("Feature to remove stock coming soon...\n");
