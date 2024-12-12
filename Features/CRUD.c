@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "CRUD.h"
+#include "Inventory.h"
 
 int product_count = 0;
 int max_product_index = 0;
@@ -63,6 +64,7 @@ void product_create(product *prod, const char *product_csv, char name[], char de
     }
     product_count++;
     product_save(prod, product_csv);
+    sync_inventory_with_product(inventory_csv, product_csv);
 }
 
 void product_read(product *prod, float min_price, float max_price)
@@ -113,6 +115,7 @@ void product_update(product *prod, const char *product_csv, int id, char name[],
 
             printf("Product with ID %d updated successfully.\n", id);
             product_save(prod, product_csv);
+            sync_inventory_with_product(inventory_csv, product_csv);
             return;
         }
     }
@@ -191,5 +194,6 @@ void product_delete(product *prod, const char *product_csv, int id)
 
     fclose(file);
     product_load(prod, product_csv);
+    sync_inventory_with_product(inventory_csv, product_csv);
     printf("Updated product list saved successfully.\n");
 }

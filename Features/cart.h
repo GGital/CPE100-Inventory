@@ -10,7 +10,15 @@ typedef struct CartItem
     double total_price;
 } CartItem;
 
+typedef struct
+{
+    char name_of_txt[100];
+    char datetime_str[100];
+} ScheduledPurchaseEntry;
+
 extern CartItem cart[];
+
+extern char transaction_txt[];
 
 extern float discount;
 

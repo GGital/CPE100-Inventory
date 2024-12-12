@@ -1,8 +1,15 @@
+#include <string.h>
+#include <stdlib.h>
 #include "owner.h"
 #include "CRUD.h"
 #include "coupon.h"
 #include "Inventory.h"
 #include "beautiful_cli.h"
+#include "report.h"
+#include "cart.h"
+#include "logging.h"
+#include "Authentication.h"
+
 void ownerPrivilegesMenu()
 {
     int choice;
@@ -16,6 +23,8 @@ void ownerPrivilegesMenu()
         printf("1. Coupon Management\n");
         printf("2. CRUD Operations\n");
         printf("3. Inventory Management\n");
+        printf("4. Report Creation\n");
+        printf("5. Check logs\n");
         printf("0. Exit\n");
         printf("======================================\n");
         printf("Enter your choice: ");
@@ -33,6 +42,10 @@ void ownerPrivilegesMenu()
         case 3:
             inventoryMenu();
             break;
+        case 4:
+            Generate_report(transaction_txt, "2024-12-12", 0, 9999, "", prod, product_count);
+        case 5:
+            break;
         case 0:
             printf("\nExiting Owner Privileges Menu...\n");
             break;
@@ -45,6 +58,7 @@ void ownerPrivilegesMenu()
 // Coupon menu function
 void couponMenu()
 {
+    char buffer[100];
     int choice;
     do
     {
@@ -73,6 +87,9 @@ void couponMenu()
             printf("When will this coupon expire (dd/mm/yyyy) : ");
             scanf("%d/%d/%d", &day, &month, &year);
             animated_spinner(10);
+            strcpy(buffer, "Add coupon : ");
+            strcat(buffer, name);
+            log_user_action(put_username, buffer);
             coupon_create(cou, coupon_csv, name, minimum_cost, discountRate, day, month, year);
             break;
         case 2:
@@ -100,6 +117,8 @@ void crudMenu()
 {
     int choice;
     char name[500], description[500];
+    char buffer[100];
+    char buffer2[33];
     float cost, price;
     int id;
     do
@@ -130,6 +149,9 @@ void crudMenu()
             printf("Enter selling price: ");
             scanf("%f", &price);
             animated_spinner(10);
+            strcpy(buffer, "Insert new product name :");
+            strcat(buffer, name);
+            log_user_action(put_username, buffer);
             product_create(prod, product_csv, name, description, cost, price);
             break;
         case 2:
@@ -150,6 +172,9 @@ void crudMenu()
             printf("Enter selling price: ");
             scanf("%f", &price);
             animated_spinner(10);
+            strcpy(buffer, "Update product name :");
+            strcat(buffer, name);
+            log_user_action(put_username, buffer);
             product_update(prod, product_csv, id, name, description, cost, price);
             break;
         case 4:
@@ -159,6 +184,10 @@ void crudMenu()
             printf("Enter id of product: ");
             scanf("%d", &id);
             animated_spinner(10);
+            strcpy(buffer, "Delete Product ID :");
+            itoa(id, buffer2, 10);
+            strcat(buffer, buffer2);
+            log_user_action(put_username, buffer);
             product_delete(prod, product_csv, id);
             break;
         case 0:
@@ -173,6 +202,8 @@ void crudMenu()
 // Inventory management menu function
 void inventoryMenu()
 {
+    char buffer[100];
+    char buffer2[33];
     int choice, id, quantity;
     do
     {
@@ -197,6 +228,10 @@ void inventoryMenu()
             scanf("%d", &id);
             printf("Enter quantity of product to be restocked: ");
             scanf("%d", &quantity);
+            strcpy(buffer, "Restocking Product ID :");
+            itoa(id, buffer2, 10);
+            strcat(buffer, buffer2);
+            log_user_action(put_username, buffer);
             inventory_restock(inv, inventory_csv, id, quantity);
             break;
         case 3:

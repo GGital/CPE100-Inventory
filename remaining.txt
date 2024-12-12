@@ -1,0 +1,7 @@
+Completed 98%
+Remaining : 
+- QOL
+- UI For Using Hybrid and Filter
+- Integration between multiplie files
+- Integration of using scheduled purchase
+- Check changes in each csv file

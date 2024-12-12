@@ -144,6 +144,34 @@ void inventory_restock(inventory *inv, const char *inventory_csv, int id, int qu
     inventory_save(inv, inventory_csv);
 }
 
+void inventory_restock_from_file(inventory *inv, const char *inventory_csv, const char *restock_file)
+{
+    FILE *file = fopen(restock_file, "r");
+    if (!file)
+    {
+        printf("Error: Unable to open restock file: %s\n", restock_file);
+        return;
+    }
+
+    char line[100];
+    while (fgets(line, sizeof(line), file))
+    {
+        int product_id, quantity;
+        if (sscanf(line, "%d : %d", &product_id, &quantity) == 2)
+        {
+            // Call existing inventory_restock function to update stock
+            inventory_restock(inv, inventory_csv, product_id, quantity);
+        }
+        else
+        {
+            printf("Warning: Invalid line format in restock file: %s", line);
+        }
+    }
+
+    fclose(file);
+    printf("Restock operation completed successfully.\n");
+}
+
 void inventory_add_product(inventory *inv, const char *inventory_csv, int id, const char *name, int stock, int threshold)
 {
     // Check if the inventory is full

@@ -176,3 +176,32 @@ void coupon_create(coupon *coupons, const char *coupon_csv, char name[], float m
         printf("You must provide valid information for the new coupon.\n");
     }
 }
+
+void delete_coupon_by_name(coupon *coupons, const char *coupon_csv, const char *name_to_delete)
+{
+    int found = 0;
+    int valid_count = 0;
+
+    // Iterate through the coupons to find and exclude the specified coupon
+    for (int i = 0; i < coupon_count; i++)
+    {
+        if (strcmp(coupons[i].name, name_to_delete) == 0)
+        {
+            found = 1; // Mark as found
+            continue;  // Skip adding this coupon to the updated list
+        }
+        // Keep all other coupons
+        coupons[valid_count++] = coupons[i];
+    }
+
+    if (found)
+    {
+        coupon_count = valid_count;       // Update the total count of coupons
+        coupon_save(coupons, coupon_csv); // Save updated coupons to CSV
+        printf("Coupon '%s' deleted successfully.\n", name_to_delete);
+    }
+    else
+    {
+        printf("Error: Coupon with name '%s' not found.\n", name_to_delete);
+    }
+}
