@@ -23,7 +23,7 @@ void enable_ansi_colors()
 }
 
 // Compilenation code
-// gcc -mconsole -o program -I./Sub-Interface -I./Features main.c Sub-Interface/beautiful_cli.c Sub-Interface/owner.c Sub-Interface/customer.c Features/coupon.c Features/cart.c Features/CRUD.c Features/Inventory.c Features/Authentication.c Features/report.c Features/logging.c
+// gcc -mconsole -std=gnu11 -o program -I./Sub-Interface -I./Features main.c Sub-Interface/beautiful_cli.c Sub-Interface/owner.c Sub-Interface/customer.c Features/coupon.c Features/cart.c Features/CRUD.c Features/Inventory.c Features/Authentication.c Features/report.c Features/logging.c
 
 int result;
 
