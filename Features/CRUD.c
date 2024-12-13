@@ -10,6 +10,9 @@ product prod[500];
 
 char product_csv[] = "./csv/product.csv";
 
+float min_price_filter = 0;
+float max_price_filter = 99999;
+
 void product_load(product *prod, const char *product_csv)
 {
     product_count = 0;

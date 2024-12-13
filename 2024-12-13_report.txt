@@ -1,0 +1,10 @@
+Report for Date: 2024-12-13
+-------------------------
+Total Revenue Before Discounts: 3744.85
+Total Revenue After Discounts: 3672.35
+Most Sold Product: 4 (Quantity: 55)
+Product Summary:
+- Product ID: 4, Name: Gaming Mouse, Total Quantity: 55
+- Product ID: 5, Name: Laptop Sleeve, Total Quantity: 50
+- Product ID: 1, Name: headphones, Total Quantity: 15
+- Product ID: 6, Name: Electric Toothbrush, Total Quantity: 2

@@ -2,16 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <locale.h>
 #include "cart.h"
+#include "strptime.h"
 #include "Inventory.h"
 #include "beautiful_cli.h"
 #include "CRUD.h"
 #include "coupon.h"
 
 #define MAX_CART_ITEMS 500
+#define MAX_ENTRIES 500
 
 char cart_csv[] = "./csv/cart.csv";
 char transaction_txt[] = "./txt/transaction.txt";
+char scheduled_csv[] = "./scheduled_purchase/schedule.csv";
 
 CartItem cart[500];
 int cart_size = 0;
@@ -109,7 +113,7 @@ void Add_product_to_cart(const char *username, int product_id, int quantity, dou
         {
             cart[i].quantity += quantity;
             cart[i].total_price = cart[i].quantity * cart[i].price_per_unit;
-            printf("Updated product %d for user %s: Quantity = %d\n", product_id, username, cart[i].quantity);
+            printf(ANSI_COLOR_GREEN "Updated product %d for user %s: Quantity = %d\n" ANSI_COLOR_RESET, product_id, username, cart[i].quantity);
             int inventory_index = -1;
             // Find product in inventory
             for (int j = 0; j < inventory_count; j++)
@@ -132,7 +136,7 @@ void Add_product_to_cart(const char *username, int product_id, int quantity, dou
         printf("Cart is full. Cannot add more items.\n");
         return;
     }
-    printf("%d\n", cart_size);
+    // printf("%d\n", cart_size);
     strcpy(cart[cart_size].username, username);
     cart[cart_size].product_id = product_id;
     cart[cart_size].quantity = quantity;
@@ -156,7 +160,7 @@ void Add_product_to_cart(const char *username, int product_id, int quantity, dou
     int res = check_for_unavailable(product_id, cart_size, inventory_index);
 
     if (res)
-        printf("Added product %d for user %s: Quantity = %d\n", product_id, username, quantity);
+        printf(ANSI_COLOR_GREEN "Added product %d for user %s: Quantity = %d\n" ANSI_COLOR_RESET, product_id, username, quantity);
     Save_cart(cart_csv);
 }
 
@@ -276,7 +280,7 @@ void Checkout(const char *username)
     int found = 0;
     char product_list[1000] = "";
 
-    printf("Checking out for %s:\n", username);
+    printf(ANSI_COLOR_GREEN "Checking out for %s:\n" ANSI_COLOR_RESET, username);
     printf("--------------------------------\n");
 
     for (int i = 0; i < cart_size;)
@@ -313,7 +317,7 @@ void Checkout(const char *username)
             strcat(product_list, product_entry);
             // Deduct stock
             inv[inventory_index].stock -= cart[i].quantity;
-            printf("Product '%s': Quantity %d, Price/Unit: %.2f, Total: %.2f\n",
+            printf(ANSI_COLOR_YELLOW "Product '%s': Quantity %d, Price/Unit: %.2f, Total: %.2f\n" ANSI_COLOR_RESET,
                    inv[inventory_index].name, cart[i].quantity,
                    cart[i].price_per_unit, cart[i].total_price);
 
@@ -338,7 +342,7 @@ void Checkout(const char *username)
     {
         if (strlen(used_coupon_name) > 0)
         {
-            printf("Used coupon: %s\n", used_coupon_name);
+            printf(ANSI_COLOR_GREEN "Used coupon: %s\n" ANSI_COLOR_RESET, used_coupon_name);
 
             // Recalculate discount for the total checkout price
             for (int i = 0; i < coupon_count; i++)
@@ -348,12 +352,12 @@ void Checkout(const char *username)
                     if (total_checkout_price >= cou[i].minimum_cost)
                     {
                         discount = (cou[i].discountRate / 100.0) * total_checkout_price;
-                        printf("You saved: %.2f\n", discount);
+                        printf(ANSI_COLOR_GREEN "You saved: %.2f\n" ANSI_COLOR_RESET, discount);
                         total_checkout_price -= discount;
                     }
                     else
                     {
-                        printf("Note: Your cart total no longer meets the minimum requirement for the coupon '%s'.\n", used_coupon_name);
+                        printf(ANSI_COLOR_RED "Note: Your cart total no longer meets the minimum requirement for the coupon '%s'.\n" ANSI_COLOR_RESET, used_coupon_name);
                         discount = 0.0;
                     }
                     break;
@@ -361,19 +365,40 @@ void Checkout(const char *username)
             }
         }
 
-        printf("Total checkout price after discounts: %.2f\n", total_checkout_price);
-        printf("Checkout complete. Your cart has been cleared.\n");
+        printf(ANSI_COLOR_CYAN "Total checkout price after discounts: %.2f\n" ANSI_COLOR_RESET, total_checkout_price);
+        printf(ANSI_COLOR_GREEN "Checkout complete. Your cart has been cleared.\n" ANSI_COLOR_RESET);
         Save_cart(cart_csv);
-
+        inventory_save(inv, inventory_csv);
         Save_transaction(transaction_txt, username, used_coupon_name, total_checkout_price, product_list);
 
         strcpy(used_coupon_name, "");
     }
     else
     {
-        printf("Your cart is empty or no products were eligible for checkout.\n");
+        printf(ANSI_COLOR_RED "Your cart is empty or no products were eligible for checkout.\n" ANSI_COLOR_RESET);
     }
     printf("--------------------------------\n");
+}
+
+void trim(char *str)
+{
+    char *end;
+
+    // Trim leading spaces
+    while (isspace((unsigned char)*str))
+        str++;
+
+    // If the string is all spaces
+    if (*str == 0)
+        return;
+
+    // Trim trailing spaces
+    end = str + strlen(str) - 1;
+    while (end > str && isspace((unsigned char)*end))
+        end--;
+
+    // Write new null terminator
+    *(end + 1) = '\0';
 }
 
 void Read_And_Checkout(const char *file_path)
@@ -391,9 +416,11 @@ void Read_And_Checkout(const char *file_path)
     int product_id, quantity;
 
     // Read username
-    if (fgets(line, sizeof(line), file) && sscanf(line, "Username : %[^\"]", username) == 1)
+    if (fgets(line, sizeof(line), file))
     {
-        printf("Username: %s\n", username);
+        trim(line);
+        if (sscanf(line, "Username : %[^\"]", username) == 1)
+            printf(ANSI_COLOR_CYAN "Username: %s\n" ANSI_COLOR_RESET, username);
     }
     else
     {
@@ -403,9 +430,11 @@ void Read_And_Checkout(const char *file_path)
     }
 
     // Read coupon
-    if (fgets(line, sizeof(line), file) && sscanf(line, "Coupon : %[^\"]", coupon) == 1)
+    if (fgets(line, sizeof(line), file))
     {
-        printf("Coupon: %s\n", coupon);
+        trim(line);
+        if (sscanf(line, "Coupon : %[^\"]", coupon) == 1)
+            printf(ANSI_COLOR_CYAN "Coupon: %s\n" ANSI_COLOR_RESET, coupon);
         if (strlen(coupon) > 0)
         {
             Apply_coupon(username, coupon);
@@ -426,7 +455,16 @@ void Read_And_Checkout(const char *file_path)
             if (sscanf(line, "%d : %d", &product_id, &quantity) == 2)
             {
                 // Assuming `Add_product_to_cart` is available and works for adding items
-                Add_product_to_cart(username, product_id, quantity, 0.0); // Price per unit will be fetched from inventory
+                float price_per_unit = 0;
+                for (int i = 0; i < product_count; i++)
+                {
+                    if (product_id == prod[i].id)
+                    {
+                        price_per_unit = prod[i].price;
+                        break;
+                    }
+                }
+                Add_product_to_cart(username, product_id, quantity, price_per_unit); // Price per unit will be fetched from inventory
                 printf("Added Product ID %d with Quantity %d\n", product_id, quantity);
             }
             else
@@ -463,27 +501,33 @@ void Process_Scheduled_Purchases(const char *csv_path)
     char line[256];
     char name_of_txt[100];
     char datetime_str[100];
+    char buffer[100];
     time_t current_time = time(NULL);
     struct tm scheduled_time;
+
+    strcpy(buffer, "./scheduled_purchase/");
 
     // Read CSV header
     if (fgets(line, sizeof(line), csv_file))
     {
-        printf("CSV header: %s\n", line);
+        // printf("CSV header: %s\n", line);
     }
 
     while (fgets(line, sizeof(line), csv_file))
     {
+
         if (sscanf(line, "%[^,],%[^\"]", name_of_txt, datetime_str) == 2)
         {
             memset(&scheduled_time, 0, sizeof(struct tm));
+            strcat(buffer, name_of_txt);
+            strcat(buffer, ".txt");
             if (strptime(datetime_str, "%Y-%m-%d", &scheduled_time))
             {
                 time_t scheduled_timestamp = mktime(&scheduled_time);
                 if (difftime(current_time, scheduled_timestamp) >= 0)
                 {
-                    printf("Processing scheduled purchase: %s\n", name_of_txt);
-                    Read_And_Checkout(name_of_txt);
+                    printf(ANSI_COLOR_GREEN "Processing scheduled purchase: %s\n" ANSI_COLOR_RESET, name_of_txt);
+                    Read_And_Checkout(buffer);
                 }
                 else
                 {
@@ -496,10 +540,6 @@ void Process_Scheduled_Purchases(const char *csv_path)
             {
                 printf("Error: Invalid datetime format in line: %s\n", line);
             }
-        }
-        else
-        {
-            printf("Error: Invalid CSV format in line: %s\n", line);
         }
     }
 
@@ -540,14 +580,14 @@ void Apply_coupon(const char *username, const char *coupon_name)
             if (total_cost >= cou[i].minimum_cost)
             {
                 discount = (cou[i].discountRate / 100.0) * total_cost;
-                printf("Coupon '%s' applied! You saved %.2f\n", coupon_name, discount);
+                printf(ANSI_COLOR_GREEN "Coupon '%s' applied! You saved %.2f\n" ANSI_COLOR_RESET, coupon_name, discount);
                 total_cost -= discount;
-                printf("New total cost: %.2f\n", total_cost);
+                printf(ANSI_COLOR_GREEN "New total cost: %.2f\n" ANSI_COLOR_RESET, total_cost);
                 strcpy(used_coupon_name, coupon_name);
             }
             else
             {
-                printf("Coupon '%s' requires a minimum cart total of %.2f\n", coupon_name, cou[i].minimum_cost);
+                printf(ANSI_COLOR_RED "Coupon '%s' requires a minimum cart total of %.2f\n" ANSI_COLOR_RESET, coupon_name, cou[i].minimum_cost);
             }
             return;
         }
@@ -561,13 +601,13 @@ void Deactivate_coupon(const char *coupon_name)
     {
         if (strcmp(cou[i].name, coupon_name) == 0)
         {
-            printf("Coupon '%s' deactivated. Reverting prices.\n", coupon_name);
+            printf(ANSI_COLOR_MAGENTA "Coupon '%s' deactivated. Reverting prices.\n" ANSI_COLOR_RESET, coupon_name);
             total_cost += discount;
             discount = 0.0;
-            printf("Total cost reverted to: %.2f\n", total_cost);
+            printf(ANSI_COLOR_MAGENTA "Total cost reverted to: %.2f\n" ANSI_COLOR_RESET, total_cost);
             strcpy(used_coupon_name, "");
             return;
         }
     }
-    printf("Coupon '%s' not found or already deactivated.\n", coupon_name);
+    printf(ANSI_COLOR_RED "Coupon '%s' not found or already deactivated.\n" ANSI_COLOR_RESET, coupon_name);
 }

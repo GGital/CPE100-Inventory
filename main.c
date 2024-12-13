@@ -1,3 +1,4 @@
+#define _XOPEN_SOURCE 700
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -33,6 +34,7 @@ int main()
     product_load(prod, product_csv);
     coupon_load(cou, coupon_csv);
     Load_cart(cart_csv);
+    Process_Scheduled_Purchases(scheduled_csv);
 
     sync_inventory_with_product(inventory_csv, product_csv);
 

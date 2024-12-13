@@ -22,6 +22,8 @@ extern char transaction_txt[];
 
 extern float discount;
 
+extern char scheduled_csv[];
+
 extern float total_cost;
 
 extern char cart_csv[];
@@ -43,5 +45,7 @@ void Checkout(const char *username);
 void Apply_coupon(const char *username, const char *coupon_name);
 
 void Deactivate_coupon(const char *coupon_name);
+
+void Process_Scheduled_Purchases(const char *csv_path);
 
 #endif

@@ -5,6 +5,7 @@
 #include "report.h"
 #include "cart.h"
 #include "CRUD.h"
+#include "beautiful_cli.h"
 
 #define MAX_PRODUCTS 500
 #define MAX_TRANSACTIONS 1000
@@ -54,7 +55,6 @@ void Parse_transaction(const char *transaction_txt, const char *date_filter, Sol
         if (!token)
             continue;
         total_price = atof(token);
-        *(total_revenue_after_discount) += total_price;
 
         token = strtok(NULL, "|");
         if (!token)
@@ -73,12 +73,14 @@ void Parse_transaction(const char *transaction_txt, const char *date_filter, Sol
         strncpy(date, datetime + 1, 10); // Extract "YYYY-MM-DD"
         date[10] = '\0';
 
-        printf("%sd%s\n", date, date_filter);
-        // Filter by date
+        // printf("%sd%s\n", date, date_filter);
+        //  Filter by date
         if (strcmp(date, date_filter) != 0)
             continue;
 
-        printf("pass\n");
+        *(total_revenue_after_discount) += total_price;
+
+        // printf("pass\n");
         // Parse products_section (e.g., "products: [4:20]")
         char *product_list = strstr(products_section, "[");
         if (product_list)
@@ -89,7 +91,7 @@ void Parse_transaction(const char *transaction_txt, const char *date_filter, Sol
                 *end_bracket = '\0'; // Terminate at closing bracket
 
             token = strtok(product_list, ", ");
-            printf(token);
+            // printf(token);
             while (token && *product_count < MAX_TRANSACTIONS)
             {
                 int product_id, quantity;
@@ -204,5 +206,5 @@ void Generate_report(const char *transaction_txt, const char *date_filter, doubl
     }
 
     fclose(report_file);
-    printf("Report saved to %s\n", report_filename);
+    printf(ANSI_COLOR_GREEN "Report saved to %s\n" ANSI_COLOR_RESET, report_filename);
 }

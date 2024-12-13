@@ -4,11 +4,14 @@
 #include "beautiful_cli.h"
 #include "customer.h"
 #include "Authentication.h"
+#include "logging.h"
 #include "cart.h"
+#include <string.h>
 
 void customerPrivilegesMenu()
 {
     int choice;
+    char buffer[100];
     int id, quantity;
     double price_per_unit;
     do
@@ -22,6 +25,7 @@ void customerPrivilegesMenu()
         printf("3. View Cart\n");
         printf("4. Checkout\n");
         printf("5. Apply Discount Coupon\n");
+        printf("6. Apply Price Filter\n");
         printf("0. Exit\n");
         printf("======================================\n");
         printf("Enter your choice: ");
@@ -31,9 +35,10 @@ void customerPrivilegesMenu()
         switch (choice)
         {
         case 1:
-            product_read(prod, 0, 99999);
+            product_read(prod, min_price_filter, max_price_filter);
             break;
         case 2:
+            char product_name[100];
             printf("\n======================================\n");
             printf(ANSI_COLOR_YELLOW "            Adding Product to Cart\n" ANSI_COLOR_RESET);
             printf("======================================\n");
@@ -46,16 +51,21 @@ void customerPrivilegesMenu()
                 if (id == prod[i].id)
                 {
                     price_per_unit = prod[i].price;
+                    strcpy(product_name, prod[i].name);
                     break;
                 }
             }
             animated_spinner(10);
+            strcpy(buffer, "Add Product to Cart : ");
+            strcat(buffer, product_name);
+            log_user_action(put_username, buffer);
             Add_product_to_cart(put_username, id, quantity, price_per_unit);
             break;
         case 3:
             View_Cart(put_username);
             break;
         case 4:
+            log_user_action(put_username, "Checkout");
             Checkout(put_username);
             break;
         case 5:
@@ -65,7 +75,19 @@ void customerPrivilegesMenu()
             printf("======================================\n");
             printf("Enter name of coupon: ");
             scanf("%s", coupon_name);
+            strcpy(buffer, "Apply Discount Coupon : ");
+            strcat(buffer, coupon_name);
+            log_user_action(put_username, buffer);
             Apply_coupon(put_username, coupon_name);
+            break;
+        case 6:
+            printf("\n======================================\n");
+            printf("            Price Filtering\n");
+            printf("======================================\n");
+            printf("Enter minimum price for filter: ");
+            scanf("%f", &min_price_filter);
+            printf("Enter maximum price for filter: ");
+            scanf("%f", &max_price_filter);
             break;
         case 0:
             printf("\nExiting Customer Privileges Menu...\n");

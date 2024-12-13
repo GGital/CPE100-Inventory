@@ -1,2 +1,7 @@
 Username: admin | Action: test | Timestamp: Thu Dec 12 23:38:13 2024
 Username: admin | Action: Insert new product name :dddd | Timestamp: Thu Dec 12 23:47:34 2024
+Username: test | Action: Add Product to Cart : Gaming Mouse | Timestamp: Fri Dec 13 16:26:35 2024
+Username: test | Action: Add Product to Cart : Electric Toothbrush | Timestamp: Fri Dec 13 16:26:45 2024
+Username: test | Action: Checkout | Timestamp: Fri Dec 13 16:26:55 2024
+Username: test | Action: Add Product to Cart : Laptop Sleeve | Timestamp: Fri Dec 13 16:42:41 2024
+Username: test | Action: Checkout | Timestamp: Fri Dec 13 16:45:34 2024

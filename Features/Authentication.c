@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "Authentication.h"
+#include "beautiful_cli.h"
 
 char authentication_csv[] = "./csv/authentication.csv";
 
@@ -37,16 +38,16 @@ int loginUser(const char *authentication_csv, int privileges)
     {
         if (privileges == 0)
         {
-            printf("Welcome, Customer %s!\n", put_username);
+            printf(ANSI_COLOR_GREEN "Welcome, Customer %s!\n" ANSI_COLOR_RESET, put_username);
         }
         else
         {
-            printf("Welcome, Owner %s!\n", put_username);
+            printf(ANSI_COLOR_GREEN "Welcome, Owner %s!\n" ANSI_COLOR_RESET, put_username);
         }
     }
     else
     {
-        printf("Login failed. Please check your credentials and try again.\n");
+        printf(ANSI_COLOR_RED "Login failed. Please check your credentials and try again.\n" ANSI_COLOR_RESET);
     }
     return result;
 }
@@ -82,7 +83,7 @@ int validate_user(const char *authentication_csv, const char *username, const ch
                 privileges == file_privileges)
             {
                 fclose(file);
-                printf("Validation successful for user: %s\n", username);
+                printf(ANSI_COLOR_GREEN "Validation successful for user: %s\n" ANSI_COLOR_RESET, username);
                 return 1; // Successful validation
             }
         }
@@ -91,7 +92,7 @@ int validate_user(const char *authentication_csv, const char *username, const ch
     // Close the file
     fclose(file);
 
-    printf("Validation failed for user: %s\n", username);
+    printf(ANSI_COLOR_RED "Validation failed for user: %s\n" ANSI_COLOR_RESET, username);
     return 0; // Validation failed
 }
 
@@ -132,6 +133,6 @@ int add_new_user(const char *authentication_csv, int privileges)
     // Close the file
     fclose(file);
 
-    printf("User added successfully: %s\n", username);
+    printf(ANSI_COLOR_GREEN "User added successfully: %s\n" ANSI_COLOR_RESET, username);
     return 0;
 }

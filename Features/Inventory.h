@@ -25,6 +25,8 @@ void sync_inventory_with_product(const char *inventory_csv, const char *product_
 
 void inventory_adjust_threshold(inventory *inv, const char *inventory_csv, int id, int new_threshold);
 
+void inventory_restock_from_file(inventory *inv, const char *inventory_csv, const char *restock_file);
+
 extern int inventory_count;
 
 extern int max_inventory_index;

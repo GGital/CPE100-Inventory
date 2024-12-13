@@ -30,4 +30,8 @@ extern product prod[];
 
 extern char product_csv[];
 
+extern float min_price_filter;
+
+extern float max_price_filter;
+
 #endif

@@ -24,7 +24,7 @@ void ownerPrivilegesMenu()
         printf("2. CRUD Operations\n");
         printf("3. Inventory Management\n");
         printf("4. Report Creation\n");
-        printf("5. Check logs\n");
+        printf("5. Edit Price Filter\n");
         printf("0. Exit\n");
         printf("======================================\n");
         printf("Enter your choice: ");
@@ -43,14 +43,29 @@ void ownerPrivilegesMenu()
             inventoryMenu();
             break;
         case 4:
-            Generate_report(transaction_txt, "2024-12-12", 0, 9999, "", prod, product_count);
+            char date_filter[100];
+            printf("\n======================================\n");
+            printf("            Report Creation\n");
+            printf("======================================\n");
+            printf("Enter date of the report (YYYY-MM-DD): ");
+            scanf("%s", date_filter);
+            Generate_report(transaction_txt, date_filter, min_price_filter, max_price_filter, "", prod, product_count);
+            break;
         case 5:
+            printf("\n======================================\n");
+            printf("            Price Filtering\n");
+            printf("======================================\n");
+            printf("Enter minimum price for filter: ");
+            scanf("%f", &min_price_filter);
+            printf("Enter maximum price for filter: ");
+            scanf("%f", &max_price_filter);
             break;
         case 0:
             printf("\nExiting Owner Privileges Menu...\n");
             break;
         default:
             printf("\nInvalid choice! Please try again.\n");
+            break;
         }
     } while (choice != 0);
 }
@@ -108,6 +123,7 @@ void couponMenu()
             break;
         default:
             printf("Invalid choice! Please try again.\n");
+            break;
         }
     } while (choice != 0);
 }
@@ -155,7 +171,7 @@ void crudMenu()
             product_create(prod, product_csv, name, description, cost, price);
             break;
         case 2:
-            product_read(prod, 0, 999);
+            product_read(prod, min_price_filter, max_price_filter);
             break;
         case 3:
             printf("\n======================================\n");
@@ -210,7 +226,7 @@ void inventoryMenu()
         printf("\n--- Inventory Management ---\n");
         printf("1. View Inventory\n");
         printf("2. Add Stock\n");
-        printf("3. Remove Stock\n");
+        printf("3. Restock From file\n");
         printf("0. Back to Owner Menu\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -235,7 +251,15 @@ void inventoryMenu()
             inventory_restock(inv, inventory_csv, id, quantity);
             break;
         case 3:
-            printf("Feature to remove stock coming soon...\n");
+            printf("\n======================================\n");
+            printf("            Restock From File\n");
+            printf("======================================\n");
+            printf("Enter name of file (File should be inside stock_script): ");
+            scanf("%s", buffer2);
+            strcat(buffer2, ".txt");
+            strcpy(buffer, "./stock_script/");
+            strcat(buffer, buffer2);
+            inventory_restock_from_file(inv, inventory_csv, buffer);
             break;
         case 0:
             printf("Returning to Owner Privileges Menu...\n");

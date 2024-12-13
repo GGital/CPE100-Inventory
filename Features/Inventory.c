@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "Inventory.h"
+#include "beautiful_cli.h"
 
 int inventory_count = 0;     // Tracks the number of inventory items
 int max_inventory_index = 0; // Tracks the maximum id in the inventory
@@ -44,7 +45,7 @@ void inventory_load(inventory *inv, const char *inventory_csv)
 
             if (inv[inventory_count - 1].stock < inv[inventory_count - 1].threshold)
             {
-                printf("%s with id %d is having low in quantity. Please restock.\n", inv[inventory_count - 1].name, inv[inventory_count - 1].id);
+                printf(ANSI_COLOR_YELLOW "%s with id %d is having low in quantity. Please restock.\n" ANSI_COLOR_RESET, inv[inventory_count - 1].name, inv[inventory_count - 1].id);
             }
             value = strtok(NULL, ",");
             col++;
@@ -81,7 +82,7 @@ void inventory_save(inventory *inv, const char *inventory_csv)
     }
 
     fclose(file);
-    printf("Inventory saved successfully to %s.\n", inventory_csv);
+    // printf("Inventory saved successfully to %s.\n", inventory_csv);
 }
 
 void inventory_check_stock(inventory *inv)
@@ -169,7 +170,7 @@ void inventory_restock_from_file(inventory *inv, const char *inventory_csv, cons
     }
 
     fclose(file);
-    printf("Restock operation completed successfully.\n");
+    printf(ANSI_COLOR_GREEN "Restock operation completed successfully.\n" ANSI_COLOR_RESET);
 }
 
 void inventory_add_product(inventory *inv, const char *inventory_csv, int id, const char *name, int stock, int threshold)
@@ -299,7 +300,7 @@ void sync_inventory_with_product(const char *inventory_csv, const char *product_
     // Save the updated inventory to inventory.csv
     inventory_save(inv, inventory_csv);
 
-    printf("Synchronization complete.\n");
+    // printf("Synchronization complete.\n");
 }
 
 void inventory_adjust_threshold(inventory *inv, const char *inventory_csv, int id, int new_threshold)

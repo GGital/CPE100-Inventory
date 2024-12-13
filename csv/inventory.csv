@@ -1,8 +1,8 @@
 id,name,quantity_in_stock,threshold_quantity
-1,headphones,45,10
-4,Gaming Mouse,25,5
-5,Laptop Sleeve,50,10
-6,Electric Toothbrush,40,10
+1,headphones,15,10
+4,Gaming Mouse,0,5
+5,Laptop Sleeve,5,10
+6,Electric Toothbrush,53,10
 7,Action Camera,15,5
 8,Desk Organizer,60,10
 9,Travel Backpack,20,5
