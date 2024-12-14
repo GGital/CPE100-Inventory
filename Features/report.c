@@ -100,7 +100,7 @@ void Parse_transaction(const char *transaction_txt, const char *date_filter, Sol
                     sold_products[*product_count].product_id = product_id;
                     sold_products[*product_count].quantity = quantity;
                     (*product_count)++;
-                    printf("%d", *product_count);
+                    // printf("%d", *product_count);
                 }
                 token = strtok(NULL, ", ");
             }

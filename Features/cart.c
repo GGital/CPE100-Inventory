@@ -216,9 +216,9 @@ void View_Cart(const char *username)
     int found = 0;
     double all_total_price = 0;
     char product_name[100];
-    printf("==========================================================================\n");
+    printf("=========================================================================================\n");
     printf("| %-10s | %-20s | %-10s | %-10s | %-10s | %-10s |\n", "Product ID", "Product Name", "Quantity", "Price/Unit", "Total", "Username");
-    printf("==========================================================================\n");
+    printf("=========================================================================================\n");
 
     for (int i = 0; i < cart_size; i++)
     {
@@ -259,9 +259,9 @@ void View_Cart(const char *username)
 
     if (strlen(used_coupon_name) > 0)
     {
-        printf(ANSI_COLOR_BLUE "A coupon '%s' is applied.\n" ANSI_COLOR_RESET, used_coupon_name);
-        printf(ANSI_COLOR_BLUE "Discount applied: %.2f\n" ANSI_COLOR_RESET, discount);
-        printf(ANSI_COLOR_BLUE "Price after discount: %.2f\n" ANSI_COLOR_RESET, all_total_price - discount);
+        printf(ANSI_COLOR_CYAN "A coupon '%s' is applied.\n" ANSI_COLOR_RESET, used_coupon_name);
+        printf(ANSI_COLOR_CYAN "Discount applied: %.2f\n" ANSI_COLOR_RESET, discount);
+        printf(ANSI_COLOR_CYAN "Price after discount: %.2f\n" ANSI_COLOR_RESET, all_total_price - discount);
     }
     else if (!found)
     {
@@ -281,7 +281,7 @@ void Checkout(const char *username)
     char product_list[1000] = "";
 
     printf(ANSI_COLOR_GREEN "Checking out for %s:\n" ANSI_COLOR_RESET, username);
-    printf("--------------------------------\n");
+    printf("==========================================================================\n");
 
     for (int i = 0; i < cart_size;)
     {
@@ -377,7 +377,7 @@ void Checkout(const char *username)
     {
         printf(ANSI_COLOR_RED "Your cart is empty or no products were eligible for checkout.\n" ANSI_COLOR_RESET);
     }
-    printf("--------------------------------\n");
+    printf("==========================================================================\n");
 }
 
 void trim(char *str)

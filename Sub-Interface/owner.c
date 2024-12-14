@@ -77,7 +77,9 @@ void couponMenu()
     int choice;
     do
     {
-        printf("\n--- Coupon Management ---\n");
+        printf("\n======================================\n");
+        printf("            Coupon Management\n");
+        printf("======================================\n");
         printf("1. Add Coupon\n");
         printf("2. View Coupons\n");
         printf("0. Back to Owner Menu\n");
@@ -223,7 +225,9 @@ void inventoryMenu()
     int choice, id, quantity;
     do
     {
-        printf("\n--- Inventory Management ---\n");
+        printf("\n======================================\n");
+        printf("            Inventory Management\n");
+        printf("======================================\n");
         printf("1. View Inventory\n");
         printf("2. Add Stock\n");
         printf("3. Restock From file\n");

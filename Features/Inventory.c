@@ -89,10 +89,10 @@ void inventory_check_stock(inventory *inv)
 {
     int displayed = 0;
 
-    printf("======================================================================\n");
+    printf("================================================================================\n");
     printf("| %-5s | %-20s | %-15s | %-10s | %-15s |\n",
            "ID", "Name", "Stock", "Threshold", "Notification");
-    printf("======================================================================\n");
+    printf("================================================================================\n");
 
     for (int i = 0; i < inventory_count; i++)
     {
@@ -115,7 +115,7 @@ void inventory_check_stock(inventory *inv)
     {
         printf("| %-70s |\n", "No inventory data found.");
     }
-    printf("======================================================================\n");
+    printf("================================================================================\n");
 }
 
 void inventory_restock(inventory *inv, const char *inventory_csv, int id, int quantity)

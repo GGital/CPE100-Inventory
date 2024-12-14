@@ -1,0 +1,8 @@
+Report for Date: 2024-12-14
+-------------------------
+Total Revenue Before Discounts: 350.00
+Total Revenue After Discounts: 350.00
+Most Sold Product: 4 (Quantity: 10)
+Product Summary:
+- Product ID: 4, Name: Gaming Mouse, Total Quantity: 10
+- Product ID: 8, Name: Desk Organizer, Total Quantity: 5

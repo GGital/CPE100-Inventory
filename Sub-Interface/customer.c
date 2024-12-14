@@ -42,6 +42,7 @@ void customerPrivilegesMenu()
             printf("\n======================================\n");
             printf(ANSI_COLOR_YELLOW "            Adding Product to Cart\n" ANSI_COLOR_RESET);
             printf("======================================\n");
+            product_read(prod, 0, 99999);
             printf("Enter id of product: ");
             scanf("%d", &id);
             printf("Enter quantity of product to purchase: ");

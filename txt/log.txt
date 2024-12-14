@@ -5,3 +5,13 @@ Username: test | Action: Add Product to Cart : Electric Toothbrush | Timestamp: 
 Username: test | Action: Checkout | Timestamp: Fri Dec 13 16:26:55 2024
 Username: test | Action: Add Product to Cart : Laptop Sleeve | Timestamp: Fri Dec 13 16:42:41 2024
 Username: test | Action: Checkout | Timestamp: Fri Dec 13 16:45:34 2024
+Username: admin | Action: Add coupon : CouponC | Timestamp: Fri Dec 13 20:08:45 2024
+Username: admin | Action: Insert new product name :A | Timestamp: Fri Dec 13 20:09:27 2024
+Username: test | Action: Add Product to Cart : Electric Toothbrush | Timestamp: Fri Dec 13 20:12:42 2024
+Username: test | Action: Apply Discount Coupon : CouponC | Timestamp: Fri Dec 13 20:13:21 2024
+Username: test | Action: Checkout | Timestamp: Fri Dec 13 20:13:36 2024
+Username: test | Action: Add Product to Cart : Gaming Mouse | Timestamp: Sat Dec 14 23:27:24 2024
+Username: test | Action: Add Product to Cart : Desk Organizer | Timestamp: Sat Dec 14 23:27:34 2024
+Username: test | Action: Checkout | Timestamp: Sat Dec 14 23:28:17 2024
+Username: test | Action: Apply Discount Coupon : CouponA | Timestamp: Sat Dec 14 23:30:39 2024
+Username: admin | Action: Add coupon : CouponD | Timestamp: Sat Dec 14 23:31:20 2024
