@@ -15,3 +15,4 @@ Username: test | Action: Add Product to Cart : Desk Organizer | Timestamp: Sat D
 Username: test | Action: Checkout | Timestamp: Sat Dec 14 23:28:17 2024
 Username: test | Action: Apply Discount Coupon : CouponA | Timestamp: Sat Dec 14 23:30:39 2024
 Username: admin | Action: Add coupon : CouponD | Timestamp: Sat Dec 14 23:31:20 2024
+Username: test | Action: Add Product to Cart : Gaming Mouse | Timestamp: Sun Dec 15 01:35:57 2024

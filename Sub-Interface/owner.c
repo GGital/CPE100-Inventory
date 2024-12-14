@@ -29,6 +29,7 @@ void ownerPrivilegesMenu()
         printf("======================================\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
+        clearScreen();
 
         // Handle user input
         switch (choice)
@@ -85,6 +86,7 @@ void couponMenu()
         printf("0. Back to Owner Menu\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
+        clearScreen();
 
         switch (choice)
         {
@@ -151,6 +153,7 @@ void crudMenu()
         printf("0. Back to Owner Menu\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
+        clearScreen();
 
         switch (choice)
         {
@@ -234,7 +237,7 @@ void inventoryMenu()
         printf("0. Back to Owner Menu\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-
+        clearScreen();
         switch (choice)
         {
         case 1:

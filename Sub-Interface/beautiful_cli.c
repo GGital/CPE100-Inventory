@@ -51,3 +51,8 @@ void typewriter_effect(const char *text)
     }
     printf("\n");
 }
+
+void clearScreen()
+{
+    system("@cls||clear");
+}

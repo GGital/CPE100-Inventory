@@ -30,7 +30,7 @@ void customerPrivilegesMenu()
         printf("======================================\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-
+        clearScreen();
         // Handle user input
         switch (choice)
         {

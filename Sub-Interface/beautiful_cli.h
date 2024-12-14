@@ -1,6 +1,8 @@
 #ifndef beautiful_cli
 #define beautiful_cli
 
+#include <stdlib.h>
+
 // ANSI Escape Codes for Terminal Styling
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_GREEN "\x1b[32m"
@@ -25,5 +27,7 @@ void create_progress_bar(int progress, int total);
 void animated_spinner(int frames);
 
 void typewriter_effect(const char *text);
+
+void clearScreen();
 
 #endif

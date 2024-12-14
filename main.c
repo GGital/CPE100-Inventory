@@ -8,6 +8,7 @@
 #include "Inventory.h"
 #include "cart.h"
 #include "coupon.h"
+#include "beautiful_cli.h"
 #include "customer.h"
 #ifdef _WIN32
 #include <windows.h>
@@ -55,7 +56,7 @@ int main()
         printf("======================================\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-
+        clearScreen();
         // Handle user input
         switch (choice)
         {
