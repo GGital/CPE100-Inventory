@@ -597,6 +597,11 @@ void Apply_coupon(const char *username, const char *coupon_name)
 
 void Deactivate_coupon(const char *coupon_name)
 {
+    if (strcmp(coupon_name, "") == 0)
+    {
+        printf(ANSI_COLOR_RED "Coupon is not applied yet.\n" ANSI_COLOR_RESET);
+        return;
+    }
     for (int i = 0; i < coupon_count; i++)
     {
         if (strcmp(cou[i].name, coupon_name) == 0)

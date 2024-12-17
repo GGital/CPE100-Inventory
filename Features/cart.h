@@ -20,6 +20,8 @@ extern CartItem cart[];
 
 extern char transaction_txt[];
 
+extern char used_coupon_name[];
+
 extern float discount;
 
 extern char scheduled_csv[];

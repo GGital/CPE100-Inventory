@@ -12,6 +12,7 @@ void customerPrivilegesMenu()
 {
     int choice;
     char buffer[100];
+    char product_name[100];
     int id, quantity;
     double price_per_unit;
     do
@@ -22,10 +23,12 @@ void customerPrivilegesMenu()
         printf("======================================\n");
         printf("1. View Product List\n");
         printf("2. Add Product to Cart\n");
-        printf("3. View Cart\n");
-        printf("4. Checkout\n");
-        printf("5. Apply Discount Coupon\n");
-        printf("6. Apply Price Filter\n");
+        printf("3. Remove Product from Cart\n");
+        printf("4. View Cart\n");
+        printf("5. Checkout\n");
+        printf("6. Apply Discount Coupon\n");
+        printf("7. Deactivate Discount Coupon\n");
+        printf("8. Apply Price Filter\n");
         printf("0. Exit\n");
         printf("======================================\n");
         printf("Enter your choice: ");
@@ -38,7 +41,6 @@ void customerPrivilegesMenu()
             product_read(prod, min_price_filter, max_price_filter);
             break;
         case 2:
-            char product_name[100];
             printf("\n======================================\n");
             printf(ANSI_COLOR_YELLOW "            Adding Product to Cart\n" ANSI_COLOR_RESET);
             printf("======================================\n");
@@ -63,13 +65,34 @@ void customerPrivilegesMenu()
             Add_product_to_cart(put_username, id, quantity, price_per_unit);
             break;
         case 3:
-            View_Cart(put_username);
+            printf("\n======================================\n");
+            printf(ANSI_COLOR_YELLOW "            Removing Product From Cart\n" ANSI_COLOR_RESET);
+            printf("======================================\n");
+            product_read(prod, 0, 99999);
+            printf("Enter id of product: ");
+            scanf("%d", &id);
+            for (int i = 0; i < product_count; i++)
+            {
+                if (id == prod[i].id)
+                {
+                    strcpy(product_name, prod[i].name);
+                    break;
+                }
+            }
+            animated_spinner(10);
+            strcpy(buffer, "Remove Product from Cart : ");
+            strcat(buffer, product_name);
+            log_user_action(put_username, buffer);
+            Remove_product_from_cart(put_username, id);
             break;
         case 4:
+            View_Cart(put_username);
+            break;
+        case 5:
             log_user_action(put_username, "Checkout");
             Checkout(put_username);
             break;
-        case 5:
+        case 6:
             char coupon_name[100];
             printf("\n======================================\n");
             printf(ANSI_COLOR_YELLOW "            Applying Discount Coupon\n" ANSI_COLOR_RESET);
@@ -81,7 +104,10 @@ void customerPrivilegesMenu()
             log_user_action(put_username, buffer);
             Apply_coupon(put_username, coupon_name);
             break;
-        case 6:
+        case 7:
+            Deactivate_coupon(used_coupon_name);
+            break;
+        case 8:
             printf("\n======================================\n");
             printf("            Price Filtering\n");
             printf("======================================\n");

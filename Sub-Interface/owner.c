@@ -75,6 +75,7 @@ void ownerPrivilegesMenu()
 void couponMenu()
 {
     char buffer[100];
+    char name[500];
     int choice;
     do
     {
@@ -82,7 +83,8 @@ void couponMenu()
         printf("            Coupon Management\n");
         printf("======================================\n");
         printf("1. Add Coupon\n");
-        printf("2. View Coupons\n");
+        printf("2. Delete Coupon\n");
+        printf("3. View Coupons\n");
         printf("0. Back to Owner Menu\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -91,7 +93,6 @@ void couponMenu()
         switch (choice)
         {
         case 1:
-            char name[500];
             float minimum_cost, discountRate;
             int day, month, year;
             printf("\n======================================\n");
@@ -112,6 +113,18 @@ void couponMenu()
             coupon_create(cou, coupon_csv, name, minimum_cost, discountRate, day, month, year);
             break;
         case 2:
+            printf("\n======================================\n");
+            printf("            Coupon Deletion\n");
+            printf("======================================\n");
+            printf("Enter name of coupon: ");
+            scanf("%s", name);
+            animated_spinner(10);
+            strcpy(buffer, "Delete coupon : ");
+            strcat(buffer, name);
+            log_user_action(put_username, buffer);
+            delete_coupon_by_name(cou, coupon_csv, name);
+            break;
+        case 3:
             float minimum_discount, maximum_discount;
             printf("\n======================================\n");
             printf(ANSI_COLOR_GREEN "            List of Coupon\n" ANSI_COLOR_RESET);
