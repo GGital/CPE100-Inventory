@@ -121,7 +121,11 @@ void inventory_check_stock(inventory *inv)
 void inventory_restock(inventory *inv, const char *inventory_csv, int id, int quantity)
 {
     int found = 0; // Flag to check if the product exists
-
+    if (quantity <= 0)
+    {
+        printf("Quantity must be positive integer");
+        return;
+    }
     // Iterate through the inventory to find the product with the given ID
     for (int i = 0; i < inventory_count; i++)
     {
@@ -181,7 +185,6 @@ void inventory_add_product(inventory *inv, const char *inventory_csv, int id, co
         printf("Error: Inventory is full. Cannot add more products.\n");
         return;
     }
-
     // Check if the product ID already exists
     for (int i = 0; i < inventory_count; i++)
     {
@@ -307,6 +310,8 @@ void inventory_adjust_threshold(inventory *inv, const char *inventory_csv, int i
 {
     int found = 0; // Flag to track if the product is found
 
+    if (new_threshold < 0)
+        return;
     // Iterate through the inventory to find the product
     for (int i = 0; i < inventory_count; i++)
     {

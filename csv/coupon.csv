@@ -1,4 +1,3 @@
 id,name,minimum_cost,discountRate,expiry_day,expiry_month,expiry_year
 2,CouponB,50.00,5.00,20,1,2025
-3,CouponC,50.00,25.00,25,12,2024
 4,CouponD,20.00,5.00,22,12,2024

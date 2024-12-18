@@ -115,7 +115,34 @@ int add_new_user(const char *authentication_csv, int privileges)
         printf("Error: Privileges must be 0 (customer) or 1 (owner).\n");
         return -1;
     }
+    FILE *filer = fopen(authentication_csv, "r");
 
+    if (!filer)
+    {
+        printf("Error opening authentication.csv");
+        return -1; // File open error
+    }
+    char line[256];
+    char file_username[100];
+    unsigned long long int file_hashed_password;
+    int file_privileges;
+
+    // Read each line of the CSV
+    while (fgets(line, sizeof(line), filer))
+    {
+        // Parse the line (CSV format: username,hashed_password,privileges)
+        if (sscanf(line, "%[^,],%llu,%d", file_username, &file_hashed_password, &file_privileges) == 3)
+        {
+            // Check if the username, hashed password, and privileges match
+            if (strcmp(username, file_username) == 0)
+            {
+                printf(ANSI_COLOR_RED "User %s is already existed.\n" ANSI_COLOR_RESET, username);
+                return -1; // Successful validation
+            }
+        }
+    }
+
+    fclose(filer);
     // Hash the password
     unsigned long long int hashed_password = simple_hash(password);
 

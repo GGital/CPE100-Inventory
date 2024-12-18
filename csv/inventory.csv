@@ -1,11 +1,11 @@
 id,name,quantity_in_stock,threshold_quantity
-1,headphones,0,10
-4,Gaming Mouse,0,5
-5,Laptop Sleeve,0,10
-6,Electric Toothbrush,53,10
-7,Action Camera,15,5
-8,Desk Organizer,55,10
-9,Travel Backpack,20,5
+1,headphones,20,10
+4,Gaming Mouse,30,5
+5,Laptop Sleeve,5,10
+6,Electric Toothbrush,58,10
+7,Action Camera,3,5
+8,Desk Organizer,50,10
+9,Travel Backpack,16,5
 11,gg,20,0
 12,ggg,0,0
 13,ddddd,0,0
